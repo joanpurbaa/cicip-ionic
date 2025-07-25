@@ -1,20 +1,47 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <main>
+    <form (ngSubmit)="addTasks()">
+      <h5>To Do List</h5>
+      <ul>
+        <li>
+          <input type="text" [(ngModel)]="taskDescription" name="taskDescription" placeholder="Tambah kegiatan kamu!">
+          <button type="submit" class="addButton">Tambah</button>
+        </li>
+      </ul>
+    </form>
+    <div class="tasksWrapper">
+      <div *ngFor="let task of tasks" class="tasksCard">
+        <div
+          [ngStyle]="{'text-decoration': task.completed ? 'line-through' : 'none', 'text-decoration-color': task.completed ? 'red' : 'inherit'}">
+          {{ task.description }}
+        </div>
+        <div class="actionButtonWrapper">
+          <button class="edit" (click)="editTasks(task)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-pencil-icon lucide-pencil">
+              <path
+                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+              <path d="m15 5 4 4" />
+            </svg>
+          </button>
+          <button class="delete" (click)="deleteTasks(task.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2">
+              <path d="M10 11v6" />
+              <path d="M14 11v6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+              <path d="M3 6h18" />
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg></button>
+          <button class="check" (click)="completedTasks(task)"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" class="lucide lucide-circle-check-icon lucide-circle-check">
+              <circle cx="12" cy="12" r="10" />
+              <path d="m9 12 2 2 4-4" />
+            </svg></button>
+        </div>
+      </div>
+    </div>
+  </main>
 </ion-content>
