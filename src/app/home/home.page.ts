@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
+import { WeatherService } from '../service/weather.service';
 
 interface Task {
   id: number;
   description: string;
+  icon: string;
+  time: string;
   completed: boolean;
+}
+
+interface WeatherData {
+  location: any;
+  current: any;
 }
 
 @Component({
@@ -14,11 +22,35 @@ interface Task {
 })
 export class HomePage {
   taskDescription = '';
+  time = '';
+  icon = '';
   tasks: Task[] = [];
   editingTaskId: number | null = null;
 
+  currentWeather = '';
+  currentWeatherCity = '';
+  currentWeatherIcon = '';
+  currentWeatherByHour: any = '';
+
+  constructor(private weatherService: WeatherService) {}
+
   ngOnInit() {
     this.loadTasks();
+
+    this.weatherService.getWeatherByCity('medan').subscribe({
+      next: (data: any) => {
+        const weatherData = data as WeatherData;
+
+        console.log(data);
+
+        this.currentWeather = weatherData.current.condition.text;
+        this.currentWeatherCity = weatherData.location.name;
+        this.currentWeatherIcon = weatherData.current.condition.icon;
+      },
+      error: (err) => {
+        console.log('gagal mendapatkan data cuaca');
+      },
+    });
   }
 
   loadTasks() {
@@ -41,21 +73,31 @@ export class HomePage {
 
       this.editingTaskId == null;
     } else {
-      const newTask: Task = {
-        id: Date.now(),
-        description: this.taskDescription,
-        completed: true,
-      };
+      this.weatherService.getWeatherForecast('medan').subscribe({
+        next: (data: any) => {
+          const hourIndex = Number(this.time.split(':')[0]);
+          const icon =
+            data.forecast.forecastday[0].hour[hourIndex].condition.icon;
 
-      this.tasks.unshift(newTask);
+          const newTask: Task = {
+            id: Date.now(),
+            description: this.taskDescription,
+            time: this.time,
+            icon,
+            completed: true,
+          };
+
+          this.tasks.unshift(newTask);
+          this.taskDescription = '';
+          this.saveTasks();
+        },
+      });
     }
-
-    this.taskDescription = '';
-    this.saveTasks();
   }
 
   editTasks(task: Task) {
     this.taskDescription = task.description;
+    this.time = task.time;
     this.editingTaskId = task.id;
 
     this.saveTasks();
