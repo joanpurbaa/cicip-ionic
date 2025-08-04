@@ -40,7 +40,7 @@ export class HomePage {
   editingTaskId: number | null = null;
 
   // weather
-  currentDate: any = '';
+  currentTemp = '';
   currentTime: any = '';
   currentWeather = '';
   currentWeatherCity = '';
@@ -59,8 +59,13 @@ export class HomePage {
     const users = JSON.parse(localStorage.getItem('user') || '');
     const token = localStorage.getItem('token');
 
-    this.currentUser =
-      typeof users == 'object' && users.email == token && users;
+    if (typeof this.currentUser == 'object') {
+      users.forEach((data: any) => {
+        if (data.email == token) {
+          this.currentUser = data;
+        }
+      });
+    }
   }
 
   loadTasks() {
@@ -73,40 +78,13 @@ export class HomePage {
         const weatherData = data as WeatherData;
 
         const currentDate = new Date();
-        const monthName = [
-          'Januari',
-          'Februari',
-          'Maret',
-          'April',
-          'Maret',
-          'Juni',
-          'Juli',
-          'Agustus',
-          'September',
-          'Oktober',
-          'November',
-          'Desember',
-        ];
-        const dayNames = [
-          'Minggu',
-          'Senin',
-          'Selasa',
-          'Rabu',
-          'Kamis',
-          'Jumat',
-          'Sabtu',
-        ];
         const hours = currentDate.getHours().toString().padStart(2, '0');
         const minutes = currentDate.getMinutes().toString().padStart(2, '0');
 
         this.currentWeather = weatherData.current.condition.text;
         this.currentWeatherCity = weatherData.location.name;
         this.currentWeatherIcon = weatherData.current.condition.icon;
-        this.currentDate = `${
-          dayNames[currentDate.getDay()]
-        }, ${currentDate.getDate()} ${
-          monthName[currentDate.getMonth()]
-        } ${currentDate.getFullYear()}`;
+        this.currentTemp = weatherData.current.temp_c;
         this.currentTime = `${hours}:${minutes}`;
       },
       error: (err) => {
@@ -152,11 +130,13 @@ export class HomePage {
             completed: true,
           };
 
-          this.currentUser?.tasks.unshift(newTask);
+          if (this.currentUser) {
+            this.currentUser.tasks.unshift(newTask);
 
-          this.taskDescription = '';
-          this.time = '';
-          this.saveTasks();
+            this.taskDescription = '';
+            this.time = '';
+            this.saveTasks();
+          }
         },
       });
     }
