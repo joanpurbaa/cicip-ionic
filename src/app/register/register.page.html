@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true">
+  <main>
+    <h5>Daftar</h5>
+    <p *ngIf="isEmailUsed" class="errorMessage">Email telah digunakan. Harap ganti</p>
+    <form (ngSubmit)="register()" action="">
+      <ul>
+        <li>
+          <label for="">Username</label>
+          <input [(ngModel)]="username" name="username" type="text" placeholder="Masukkan username">
+        </li>
+        <li>
+          <label for="">Email</label>
+          <input [(ngModel)]="email" name="email" type="text" placeholder="Masukkan email">
+        </li>
+        <li>
+          <label for="">Password</label>
+          <input [(ngModel)]="password" name="password" type="text" placeholder="Masukkan password">
+        </li>
+        <li>
+          <button type="submit" [disabled]="!username || !email || !password"
+            [ngStyle]="{'background-color': (!username || !email || !password) ? 'gray' : 'white', 'cursor-pointer': (!username || !email || !password) ? 'not-allowed' : 'pointer', 'color': (!username || !email || !password) ? 'white' : 'rgb(45, 101, 255)'}">Daftar</button>
+        </li>
+        <li>
+          <p>Sudah punya akun? <a href="/masuk">Masuk</a></p>
+        </li>
+      </ul>
+    </form>
+  </main>
+</ion-content>

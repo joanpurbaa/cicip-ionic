@@ -12,6 +12,21 @@ const routes: Routes = [
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
   },
+  {
+    path: 'daftar',
+    loadChildren: () =>
+      import('./register/register.module').then((m) => m.RegisterPageModule),
+  },
+  {
+    path: 'masuk',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
+  },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
+  },
 ];
 
 @NgModule({

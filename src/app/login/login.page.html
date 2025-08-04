@@ -1,0 +1,24 @@
+<ion-content [fullscreen]="true">
+  <main>
+    <h5>Masuk</h5>
+    <p *ngIf="isValidCredential" class="errorMessage">Email atau password salah</p>
+    <form (ngSubmit)="login()" action="">
+      <ul>
+        <li>
+          <label for="">Email</label>
+          <input [(ngModel)]="email" name="email" type="text" placeholder="Masukkan email">
+        </li>
+        <li>
+          <label for="">Password</label>
+          <input [(ngModel)]="password" name="password" type="text" placeholder="Masukkan password">
+        </li>
+        <li>
+          <button type="submit">Masuk</button>
+        </li>
+        <li>
+          <p>Belum punya akun? <a href="/daftar">Daftar</a></p>
+        </li>
+      </ul>
+    </form>
+  </main>
+</ion-content>

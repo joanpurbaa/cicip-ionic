@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
 import { WeatherService } from '../service/weather.service';
 
-interface Task {
+interface Tasks {
   id: number;
   description: string;
   icon: string;
   time: string;
   completed: boolean;
+}
+
+interface Users {
+  username: string;
+  email: string;
+  password: string;
+  tasks: Tasks[];
 }
 
 interface WeatherData {
@@ -21,12 +28,20 @@ interface WeatherData {
   standalone: false,
 })
 export class HomePage {
+  // user
+  users: Users[] = [];
+  currentUser: Users | null = null;
+
+  // tasks
+  task: Tasks[] | null | any = null;
   taskDescription = '';
   time = '';
   icon = '';
-  tasks: Task[] = [];
   editingTaskId: number | null = null;
 
+  // weather
+  currentDate: any = '';
+  currentTime: any = '';
   currentWeather = '';
   currentWeatherCity = '';
   currentWeatherIcon = '';
@@ -35,17 +50,64 @@ export class HomePage {
   constructor(private weatherService: WeatherService) {}
 
   ngOnInit() {
+    this.loadCurrentUser();
     this.loadTasks();
+    this.loadWeather();
+  }
 
+  loadCurrentUser() {
+    const users = JSON.parse(localStorage.getItem('user') || '');
+    const token = localStorage.getItem('token');
+
+    this.currentUser =
+      typeof users == 'object' && users.email == token && users;
+  }
+
+  loadTasks() {
+    this.task = this.currentUser;
+  }
+
+  loadWeather() {
     this.weatherService.getWeatherByCity('medan').subscribe({
       next: (data: any) => {
         const weatherData = data as WeatherData;
 
-        console.log(data);
+        const currentDate = new Date();
+        const monthName = [
+          'Januari',
+          'Februari',
+          'Maret',
+          'April',
+          'Maret',
+          'Juni',
+          'Juli',
+          'Agustus',
+          'September',
+          'Oktober',
+          'November',
+          'Desember',
+        ];
+        const dayNames = [
+          'Minggu',
+          'Senin',
+          'Selasa',
+          'Rabu',
+          'Kamis',
+          'Jumat',
+          'Sabtu',
+        ];
+        const hours = currentDate.getHours().toString().padStart(2, '0');
+        const minutes = currentDate.getMinutes().toString().padStart(2, '0');
 
         this.currentWeather = weatherData.current.condition.text;
         this.currentWeatherCity = weatherData.location.name;
         this.currentWeatherIcon = weatherData.current.condition.icon;
+        this.currentDate = `${
+          dayNames[currentDate.getDay()]
+        }, ${currentDate.getDate()} ${
+          monthName[currentDate.getMonth()]
+        } ${currentDate.getFullYear()}`;
+        this.currentTime = `${hours}:${minutes}`;
       },
       error: (err) => {
         console.log('gagal mendapatkan data cuaca');
@@ -53,25 +115,28 @@ export class HomePage {
     });
   }
 
-  loadTasks() {
-    const saved = localStorage.getItem('tasks');
-
-    this.tasks = saved ? JSON.parse(saved) : [];
-  }
-
   saveTasks() {
-    localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    localStorage.setItem('user', JSON.stringify(this.currentUser));
   }
 
   addTasks() {
     if (!this.taskDescription.trim()) return;
 
     if (this.editingTaskId !== null) {
-      const task = this.tasks.find((t) => t.id === this.editingTaskId);
+      const taskIndex = this.currentUser?.tasks.findIndex(
+        (t) => t.id == this.editingTaskId
+      );
 
-      if (task) task.description == this.taskDescription;
+      if (taskIndex !== undefined && taskIndex !== -1 && this.currentUser) {
+        this.currentUser.tasks[taskIndex].description = this.taskDescription;
+        this.currentUser.tasks[taskIndex].time = this.time;
 
-      this.editingTaskId == null;
+        this.saveTasks();
+
+        this.taskDescription = '';
+        this.time = '';
+        this.editingTaskId = null;
+      }
     } else {
       this.weatherService.getWeatherForecast('medan').subscribe({
         next: (data: any) => {
@@ -79,7 +144,7 @@ export class HomePage {
           const icon =
             data.forecast.forecastday[0].hour[hourIndex].condition.icon;
 
-          const newTask: Task = {
+          const newTask: Tasks = {
             id: Date.now(),
             description: this.taskDescription,
             time: this.time,
@@ -87,29 +152,37 @@ export class HomePage {
             completed: true,
           };
 
-          this.tasks.unshift(newTask);
+          this.currentUser?.tasks.unshift(newTask);
+
           this.taskDescription = '';
+          this.time = '';
           this.saveTasks();
         },
       });
     }
   }
 
-  editTasks(task: Task) {
+  editTasks(task: Tasks) {
     this.taskDescription = task.description;
     this.time = task.time;
     this.editingTaskId = task.id;
+
+    console.log(task);
 
     this.saveTasks();
   }
 
   deleteTasks(taskId: number) {
-    this.tasks = this.tasks.filter((t) => t.id !== taskId);
+    if (this.currentUser) {
+      this.currentUser.tasks = this.currentUser?.tasks.filter(
+        (task) => task.id !== taskId
+      );
+    }
 
     this.saveTasks();
   }
 
-  completedTasks(task: Task) {
+  completedTasks(task: Tasks) {
     task.completed = !task.completed;
 
     this.saveTasks();
