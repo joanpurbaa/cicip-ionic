@@ -56,17 +56,26 @@ export class HomePage {
   }
 
   loadCurrentUser() {
-    const users = JSON.parse(localStorage.getItem('user') || '');
+    let usersString = localStorage.getItem('user');
     const token = localStorage.getItem('token');
 
-    if (typeof users == 'object') {
-      users.forEach((data: any) => {
-        if (data.email == token) {
-          this.currentUser = data;
-        }
-      });
-    }
+    if (usersString) {
+      try {
+        const users = JSON.parse(usersString);
 
+        if (Array.isArray(users)) {
+          users.forEach((data: any) => {
+            if (data.email == token) {
+              this.currentUser = data;
+            }
+          });
+        } else if (typeof users === 'object' && users?.email == token) {
+          this.currentUser = users;
+        }
+      } catch (e) {
+        console.log('error');
+      }
+    }
   }
 
   loadTasks() {
