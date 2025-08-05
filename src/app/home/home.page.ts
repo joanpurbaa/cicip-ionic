@@ -59,13 +59,14 @@ export class HomePage {
     const users = JSON.parse(localStorage.getItem('user') || '');
     const token = localStorage.getItem('token');
 
-    if (typeof this.currentUser == 'object') {
+    if (typeof users == 'object') {
       users.forEach((data: any) => {
         if (data.email == token) {
           this.currentUser = data;
         }
       });
     }
+
   }
 
   loadTasks() {
