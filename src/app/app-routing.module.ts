@@ -8,6 +8,14 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'splash-screen-page',
+    loadChildren: () => import('./splash-screen/splash-screen.module').then((m) => m.SplashScreenPageModule)
+  },
+  {
+    path: 'landing-page',
+    loadChildren: () => import('./landing-page/landing-page.module').then((m) => m.LandingPagePageModule)
+  },
+  {
     path: 'home',
     loadChildren: () =>
       import('./home/home.module').then((m) => m.HomePageModule),
@@ -26,6 +34,14 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./login/login.module').then((m) => m.LoginPageModule),
+  },
+  {
+    path: 'landing-page',
+    loadChildren: () => import('./landing-page/landing-page.module').then( m => m.LandingPagePageModule)
+  },
+  {
+    path: 'splash-screen',
+    loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
   },
 ];
 
