@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -10,7 +11,7 @@ export class LandingPagePage implements OnInit {
   image: string = '';
   description: string = '';
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     setTimeout(() => {
@@ -27,5 +28,9 @@ export class LandingPagePage implements OnInit {
       this.image = 'assets/weather.gif';
       this.description = 'Kasih informasi cuaca secara berkala';
     }, 8000);
+
+    setTimeout(() => {
+      this.router.navigate(['masuk']);
+    }, 10000);
   }
 }

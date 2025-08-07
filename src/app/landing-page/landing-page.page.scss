@@ -5,8 +5,13 @@
   font-family: "Poppins", sans-serif;
 }
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 main {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background: rgb(52, 106, 255);
   padding: 20px 10px;
@@ -15,13 +20,17 @@ main {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  overflow: hidden;
 }
 
 img {
   width: 250px;
+  max-width: 90%;
+  height: auto;
 }
 
 .description {
   font-size: 1rem;
   text-align: center;
+  max-width: 90%;
 }

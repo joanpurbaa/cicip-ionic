@@ -6,19 +6,59 @@
 }
 
 main {
+  position: relative;
   width: 100%;
   height: 100dvh;
-  background: linear-gradient(105deg, rgb(10, 74, 250), rgb(111, 149, 255));
-  padding: 20px 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background-image: url("/assets/registerBackground.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: -55px -0;
 }
 
-h5 {
+.effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.295) 50%,
+    rgb(45, 101, 255) 100%
+  );
+  backdrop-filter: blur(3px);
+  z-index: 1;
+}
+
+section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100dvh;
+  padding: 40% 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.titleWrapper svg {
+  width: 30px;
+  height: 30px;
+}
+
+.title {
+  font-size: 1.3rem;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
+}
+
+section > p {
+  margin-top: 10px;
 }
 
 .errorMessage {
@@ -55,32 +95,36 @@ form > ul > li {
 
 form > ul > li > input[type="text"] {
   width: 100%;
-  height: 40px;
+  height: 50px;
   padding: 10px;
   outline: none;
   border: none;
-  color: #272727;
-  background: white;
+  color: white;
+  background: transparent;
+  backdrop-filter: blur(10px);
   border: 1px solid rgb(226, 226, 226);
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+input::placeholder {
+  color: white;
 }
 
 button {
   width: 100%;
-  height: 40px;
-  color: rgb(45, 101, 255);
-  font-weight: bold;
+  height: 50px;
+  color: white;
   padding: 10px;
-  background: white;
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
+  background: rgb(45, 101, 255);
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
 
 form > ul > li > label,

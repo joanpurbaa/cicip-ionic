@@ -79,9 +79,9 @@
       </div>
     </div>
     <form (ngSubmit)="addTasks()">
-      <ul>
+      <ul role="list">
         <li>
-          <input type="text" [(ngModel)]="taskDescription" name="taskDescription" placeholder="Tambah kegiatan kamu!">
+          <input type="text" [(ngModel)]="taskDescription" name="taskDescription" placeholder="Tambah kegiatan kamu!" autocomplete="off">
           <input type="time" [(ngModel)]="time" name="time">
         </li>
         <li>
