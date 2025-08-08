@@ -145,7 +145,11 @@ export class HomePage {
 
             this.taskDescription = '';
             this.time = '';
-            this.saveTasks();
+
+            const storedData = localStorage.getItem("user");
+
+            this.currentUser
+            // this.saveTasks();
           }
         },
       });

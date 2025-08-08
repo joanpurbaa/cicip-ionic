@@ -35,7 +35,7 @@
               [ngStyle]="{'background-color': (!username || !email || !password) ? 'gray' : 'rgb(45, 101, 255)', 'cursor-pointer': (!username || !email || !password) ? 'not-allowed' : 'pointer', 'color': (!username || !email || !password) ? 'white' : 'white'}">Daftar</button>
           </li>
           <li>
-            <p>Sudah punya akun? <a href="/masuk">Masuk</a></p>
+            <p>Sudah punya akun? <IonRouterLink routerLink="/masuk" class="link">Masuk</IonRouterLink></p>
           </li>
         </ul>
       </form>

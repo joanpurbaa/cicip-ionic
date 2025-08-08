@@ -137,6 +137,7 @@ form > ul > li > p > a {
   color: white;
 }
 
-IonRouterLink {
+.link {
   cursor: pointer;
+  text-decoration: underline;
 }

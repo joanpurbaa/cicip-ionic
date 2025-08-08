@@ -32,21 +32,29 @@ export class RegisterPage {
   constructor(private router: Router) {}
 
   register() {
+    const storedUser = JSON.parse(localStorage.getItem('user') || '[]');
+
+    this.user = Array.isArray(storedUser) ? storedUser : [];
+
     if (this.user.some((data) => data.email == this.email)) {
       this.isEmailUsed = true;
-    } else {
-      this.user.push({
-        username: this.username,
-        email: this.email,
-        password: this.password,
-        tasks: [],
-      });
 
-      this.isEmailUsed = false;
-
-      localStorage.setItem('user', JSON.stringify(this.user));
-
-      this.router.navigate(['masuk']);
+      return;
     }
+
+    const userData: User = {
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      tasks: [],
+    };
+
+    this.isEmailUsed = false;
+
+    this.user.push(userData);
+
+    localStorage.setItem('user', JSON.stringify(this.user));
+
+    this.router.navigate(['masuk']);
   }
 }

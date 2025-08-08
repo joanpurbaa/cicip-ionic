@@ -23,6 +23,8 @@ export class LoginPage {
   login() {
     this.user = JSON.parse(localStorage.getItem('user') || '');
 
+    console.log(this.user);
+
     if (
       this.user.some(
         (data) => data.email == this.email && data.password == this.password
